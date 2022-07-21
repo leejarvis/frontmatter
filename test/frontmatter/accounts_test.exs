@@ -13,7 +13,7 @@ defmodule Frontmatter.AccountsTest do
     end
 
     test "with a custom default list name" do
-      assert {:ok, %Account{} = account} = create_account(%{default_list_name: "My List"})
+      assert {:ok, %Account{} = account} = create_account(%{"default_list_name" => "My List"})
       assert [%List{name: "My List"} = list] = account.lists
       assert list == account.default_list
     end
