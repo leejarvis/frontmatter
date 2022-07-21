@@ -7,6 +7,7 @@ defmodule Frontmatter.List do
   schema "lists" do
     field :name, :string
     belongs_to :account, Frontmatter.Account
+    has_many :items, Frontmatter.Lists.Item
     timestamps()
   end
 

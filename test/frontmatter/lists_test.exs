@@ -3,10 +3,21 @@ defmodule Frontmatter.ListsTest do
 
   alias Frontmatter.{Accounts,Lists}
   alias Frontmatter.{Account,List}
+  alias Frontmatter.Lists.Item
 
-  setup do
+  setup context do
     {:ok, %Account{} = account} = Accounts.create_account(%{})
-    {:ok, %{account: account}}
+    context = Map.put(context, :account, account)
+
+    context =
+      if context[:list] do
+        {:ok, list} = Lists.create_list(account, context[:list])
+        Map.put(context, :list, list)
+      else
+        context
+      end
+
+    {:ok, context}
   end
 
   describe "create_list/2" do
@@ -21,6 +32,13 @@ defmodule Frontmatter.ListsTest do
       assert {:ok, %List{}} = create_list(account, %{name: "My list"})
       assert {:error, changeset} = create_list(account, %{name: "My list"})
       assert %{name: ["has already been taken"]} = errors_on(changeset)
+    end
+  end
+
+  describe "create_item/2" do
+    @tag list: %{name: "Groceries"}
+    test "creating an item", %{list: list} do
+      assert {:ok, %Item{title: "Milk"}} = Lists.create_item(list, %{title: "Milk"})
     end
   end
 end
