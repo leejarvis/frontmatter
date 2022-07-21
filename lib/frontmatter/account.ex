@@ -3,6 +3,7 @@ defmodule Frontmatter.Account do
 
   schema "accounts" do
     has_many :lists, Frontmatter.List
+    has_one :default_list, Frontmatter.List
     timestamps()
   end
 end
